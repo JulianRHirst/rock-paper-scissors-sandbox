@@ -5,19 +5,18 @@ const getRandomMove = () => {
   };
   
   const getOutcome = (moveOne, moveTwo) => {
+
     if (moveOne === moveTwo) {
       return "It's a draw!";
     }
-  
-    if (
-      (moveOne === "scissors" && moveTwo === "paper") ||
-      (moveOne === "rock" && moveTwo === "scissors") ||
-      (moveOne === "paper" && moveTwo === "rock")
-    ) {
-      return "Player One wins!";
+ 
+    const beats = {
+      "scissors": "paper",
+      "rock": "scissors",
+      "paper": "rock"
     }
-  
-    return "Player Two wins!";
+
+    return  beats[moveOne] === moveTwo ? "Player One wins!" : "Player Two wins!";
   };
   
   // Removing elements (nodes) from the DOM
@@ -36,9 +35,48 @@ const getRandomMove = () => {
     updateDOM(playerOneMove, playerTwoMove, outcome);
   };
   
-  const updateDOM = (moveOne, moveTwo, outcome) => {
-    // TODO Implement this method to update the DOM
-    // There are some images you can use in the images directory
+  function sleep(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  }
+
+  const updateDOM = async (moveOne, moveTwo, outcome) => {
+    
+    const moveLookup = {
+      "scissors": "./images/scissors.png",
+      "rock": "./images/rock.png",
+      "paper": "./images/paper.png"
+    };
+
+    document.getElementById("player-one-move__img").src = moveLookup[moveOne];
+    document.getElementById("player-one-move__name").innerHTML = moveOne;
+
+    document.getElementById("player-two-move__img").src = moveLookup[moveTwo];
+    document.getElementById("player-two-move__name").innerHTML = moveTwo;
+
+    const result = getOutcome(moveOne, moveTwo);
+    document.getElementById("match-results").innerHTML = result;
+
+    if (result !== "It's a draw!" ) {
+      if (result === "Player One wins!"){
+        document.getElementById("player-one-move").style.animation = "";
+        await sleep(0);
+        document.getElementById("player-one-move").style.borderColor = "green";
+        document.getElementById("player-two-move").style.borderColor = "red";
+        document.getElementById("player-one-move").style.animation = "bulge 1s ease";
+        document.getElementById("player-two-move").style.animation = "";
+      }
+      else {
+        
+        document.getElementById("player-two-move").style.animation = "";
+        await sleep(0);
+        document.getElementById("player-two-move").style.animation = "bulge 1s ease";
+        document.getElementById("player-one-move").style.animation = "s";
+        document.getElementById("player-two-move").style.borderColor = "green";
+        document.getElementById("player-one-move").style.borderColor = "red";
+      }
+    }
+
+
   };
   
   const playButton = document.getElementById("play-btn");
