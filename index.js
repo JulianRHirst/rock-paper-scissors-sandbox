@@ -66,7 +66,6 @@ const getRandomMove = () => {
         document.getElementById("player-two-move").style.animation = "";
       }
       else {
-        
         document.getElementById("player-two-move").style.animation = "";
         await sleep(0);
         document.getElementById("player-two-move").style.animation = "bulge 1s ease";
@@ -74,8 +73,12 @@ const getRandomMove = () => {
         document.getElementById("player-two-move").style.borderColor = "green";
         document.getElementById("player-one-move").style.borderColor = "red";
       }
+    } else {
+      document.getElementById("player-one-move").style.borderColor = "yellow";
+      document.getElementById("player-two-move").style.borderColor = "yellow";
+      document.getElementById("player-one-move").style.animation = "";
+      document.getElementById("player-two-move").style.animation = "";
     }
-
 
   };
   
